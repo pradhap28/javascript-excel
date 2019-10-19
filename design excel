@@ -1,0 +1,87 @@
+<link rel="stylesheet" href="http://localhost:8383/TableOperation/design.css">
+<script src="http://localhost:8383/TableOperation/impExport.js"></script>
+
+<html>       
+   <h2>Employee Details</h2>         
+   <body>  
+              
+       <button id="btn" onclick="importFile()">Import</button>
+       <a href="http://localhost:8383/TableOperation/table.csv" download>Export</a>  
+        <button id="bt" onclick="appendRow()">RowAdd</button>
+         <button id="bt" onclick="appendColumn()">ColAdd</button>
+      <!-- <table id="table" style="width:80%"  onmouseUp="mouseUp()" ></table> -->
+</body>   
+</html>
+
+
+function importFile() {
+    
+     document.getElementById("btn").disabled = true;
+     var x = document.createElement("TABLE");
+     var xhttp = new XMLHttpRequest();
+     xhttp.onreadystatechange = function() {
+     if (this.readyState === 4 && this.status === 200) {
+     var text = this.responseText;
+     var sep = text.split('\n');
+     var record = [];
+     var i,j;
+     var x = 1;
+     
+     for(var i =0 ;i<sep.length;i++){
+         record[i]=sep[i].split(',');
+     }
+     var t = document.createElement("TABLE");
+     t.setAttribute("id", "table");
+     document.body.appendChild(t);
+     var b = document.createElement("TBODY"); 
+     b.setAttribute("id", "tb");
+     var h = document.createElement("TH");
+     h.setAttribute("id", "th");
+     var r = document.createElement("TR");
+     r.setAttribute("id", "tr");
+     
+     for(i=0;i<record[0].length;i++){
+         
+         if(i === 0){
+             var d = document.createElement("TD");
+             d.innerHTML = "sno";
+             r.appendChild(d);
+             document.getElementById("table").appendChild(r);    
+         }
+         
+       var d = document.createElement("TD");
+       d.innerHTML = record[0][i];
+       r.appendChild(d);
+       document.getElementById("table").appendChild(r);        
+ }
+     for(i=1;i<record.length;i++){        
+       var r = document.createElement("TR");
+       
+       for(j=0;j<record[i].length;j++){
+           if(j === 0){
+               
+             var d = document.createElement("TD");    
+             d.innerHTML = x;
+             r.appendChild(d);
+             document.getElementById("table").appendChild(r);
+           }
+        var d = document.createElement("TD");    
+        d.innerHTML = record[i][j];
+        r.appendChild(d);
+        document.getElementById("table").appendChild(r);
+      }
+      x++;
+    }
+   }
+ };
+  xhttp.open("GET", "http://localhost:8383/TableOperation/table.csv", true);
+  xhttp.send();
+}
+function appendRow() { 
+    
+   var row = table.insertRow();
+   for(var i = 0;i< 5;i++){
+     x =row.insertCell(i);
+     x.innerHTML= 'x';
+ }
+}
